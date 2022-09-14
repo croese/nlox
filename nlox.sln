@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nlox.Command", "Nlox.Command\Nlox.Command.csproj", "{67048DA4-26F0-4BB1-974C-3E05CA36CF5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nlox.Core", "Nlox.Core\Nlox.Core.csproj", "{EB1DF004-E240-4616-B842-FDE25FBFBB32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nlox.Core.Tests", "Nlox.Core.Tests\Nlox.Core.Tests.csproj", "{01D140A2-7719-4220-9986-5DE62321BE3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67048DA4-26F0-4BB1-974C-3E05CA36CF5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67048DA4-26F0-4BB1-974C-3E05CA36CF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67048DA4-26F0-4BB1-974C-3E05CA36CF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67048DA4-26F0-4BB1-974C-3E05CA36CF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB1DF004-E240-4616-B842-FDE25FBFBB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB1DF004-E240-4616-B842-FDE25FBFBB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB1DF004-E240-4616-B842-FDE25FBFBB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB1DF004-E240-4616-B842-FDE25FBFBB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D140A2-7719-4220-9986-5DE62321BE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D140A2-7719-4220-9986-5DE62321BE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D140A2-7719-4220-9986-5DE62321BE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D140A2-7719-4220-9986-5DE62321BE3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

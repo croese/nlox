@@ -1,0 +1,11 @@
+// this is a comment
+(( )){} // grouping stuff
+!*+-/=<> <= == // operators
+123
+123.4
+"hello world"
+true
+false
+and
+class
+test
