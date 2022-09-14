@@ -8,7 +8,7 @@ public abstract class Expr {
         R VisitUnaryExpr(Unary expr);
     }
     public class Binary : Expr {
-        Binary(Expr Left, Token Operator, Expr Right) {
+        public Binary(Expr Left, Token Operator, Expr Right) {
                 this.Left = Left;
                 this.Operator = Operator;
                 this.Right = Right;
@@ -24,7 +24,7 @@ public abstract class Expr {
     }
 
     public class Grouping : Expr {
-        Grouping(Expr Expression) {
+        public Grouping(Expr Expression) {
                 this.Expression = Expression;
         }
 
@@ -36,7 +36,7 @@ public abstract class Expr {
     }
 
     public class Literal : Expr {
-        Literal(Object Value) {
+        public Literal(Object? Value) {
                 this.Value = Value;
         }
 
@@ -44,11 +44,11 @@ public abstract class Expr {
             return visitor.VisitLiteralExpr(this);
         }
 
-        public Object Value{ get; }
+        public Object? Value{ get; }
     }
 
     public class Unary : Expr {
-        Unary(Token Operator, Expr Right) {
+        public Unary(Token Operator, Expr Right) {
                 this.Operator = Operator;
                 this.Right = Right;
         }

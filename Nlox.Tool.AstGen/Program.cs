@@ -9,7 +9,7 @@ var outputDir = args[0];
 DefineAst(outputDir, "Expr", new List<string> {
     "Binary   : Expr Left, Token Operator, Expr Right",
     "Grouping : Expr Expression",
-    "Literal  : Object Value",
+    "Literal  : Object? Value",
     "Unary    : Token Operator, Expr Right"
 });
 
@@ -52,7 +52,7 @@ void DefineType(StringBuilder buffer, string baseName, string className, string 
     buffer.AppendLine($"    public class {className} : {baseName} {{");
 
     // constructor
-    buffer.AppendLine($"        {className}({fieldList}) {{");
+    buffer.AppendLine($"        public {className}({fieldList}) {{");
     var fields = fieldList.Split(", ");
     foreach (var field in fields) {
         var name = field.Split(" ")[1];
