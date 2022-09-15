@@ -15,14 +15,23 @@ void RunFile(string path) {
     var source = File.ReadAllText(path);
     Run(source);
 
-    if (Lox.HadError) Environment.Exit(65);
+    if (Lox.HadError) {
+        Environment.Exit(65);
+    }
+
+    if (Lox.HadRuntimeError) {
+        Environment.Exit(70);
+    }
 }
 
 void RunPrompt() {
     while (true) {
         Console.Write("> ");
         var line = Console.ReadLine();
-        if (line == null) break;
+        if (line == null) {
+            break;
+        }
+
         Run(line);
         Lox.HadError = false;
     }
@@ -32,5 +41,13 @@ void Run(string source) {
     var scanner = new Scanner(source);
     var tokens = scanner.ScanTokens();
 
-    foreach (var token in tokens) Console.WriteLine(token);
+    var parser = new Parser(tokens);
+    var expression = parser.Parse();
+
+    if (Lox.HadError) {
+        return;
+    }
+
+    var interpreter = new Interpreter();
+    interpreter.Interpret(expression!);
 }
