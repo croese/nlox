@@ -1,4 +1,5 @@
 ﻿using Nlox.Core;
+using Environment = System.Environment;
 
 if (args.Length > 1) {
     Console.WriteLine("usage: nlox [script]");
@@ -42,12 +43,12 @@ void Run(string source) {
     var tokens = scanner.ScanTokens();
 
     var parser = new Parser(tokens);
-    var expression = parser.Parse();
+    var statements = parser.Parse();
 
     if (Lox.HadError) {
         return;
     }
 
-    var interpreter = new Interpreter();
-    interpreter.Interpret(expression!);
+    var interpreter = new Interpreter(Console.Out);
+    interpreter.Interpret(statements);
 }

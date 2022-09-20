@@ -1,11 +1,34 @@
-// this is a comment
-(( )){} // grouping stuff
-!*+-/=<> <= == // operators
-123
-123.4
-"hello world"
-true
-false
-and
-class
-test
+print "one";
+print true;
+print 2 + 1;
+var beverage = "espresso";
+print beverage; // "espresso".
+var a = "before";
+print a; // "before".
+var a = "after";
+print a; // "after".
+var a = 1;
+var b = 2;
+print a + b;
+var a = 1;
+print a = 2; // "2".
+
+var a = "global a";
+var b = "global b";
+var c = "global c";
+{
+  var a = "outer a";
+  var b = "outer b";
+  {
+    var a = "inner a";
+    print a;
+    print b;
+    print c;
+  }
+  print a;
+  print b;
+  print c;
+}
+print a;
+print b;
+print c;

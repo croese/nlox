@@ -8,21 +8,18 @@ public class RuntimeError : Exception {
     public Token Token { get; }
 }
 
-public class Interpreter : Expr.Visitor<object?> {
+public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
     private readonly TextWriter _writer;
+    private Environment _environment = new();
 
     public Interpreter(TextWriter writer) {
         _writer = writer;
     }
 
-    public void Interpret(Expr expression) {
-        try {
-            var value = Evaluate(expression);
-            _writer.WriteLine(Stringify(value));
-        }
-        catch (RuntimeError error) {
-            Lox.RuntimeError(error);
-        }
+    public object? VisitAssignExpr(Expr.Assign expr) {
+        var value = Evaluate(expr.Value);
+        _environment.Assign(expr.Name, value);
+        return value;
     }
 
     public object? VisitBinaryExpr(Expr.Binary expr) {
@@ -90,6 +87,65 @@ public class Interpreter : Expr.Visitor<object?> {
         }
 
         return null;
+    }
+
+    public object? VisitVariableExpr(Expr.Variable expr) {
+        return _environment.Get(expr.Name);
+    }
+
+    public ValueTuple VisitBlockStmt(Stmt.Block stmt) {
+        ExecuteBlock(stmt.Statements, new Environment(_environment));
+        return ValueTuple.Create();
+    }
+
+    public ValueTuple VisitExpressionStmt(Stmt.Expression stmt) {
+        Evaluate(stmt.Expr);
+        return ValueTuple.Create();
+    }
+
+    public ValueTuple VisitPrintStmt(Stmt.Print stmt) {
+        var value = Evaluate(stmt.Expression);
+        _writer.WriteLine(Stringify(value));
+        return ValueTuple.Create();
+    }
+
+    public ValueTuple VisitVarStmt(Stmt.Var stmt) {
+        object? value = null;
+        if (stmt.Initializer != null) {
+            value = Evaluate(stmt.Initializer);
+        }
+
+        _environment.Define(stmt.Name.Lexeme, value);
+        return ValueTuple.Create();
+    }
+
+    private void ExecuteBlock(List<Stmt> statements, Environment environment) {
+        var previous = _environment;
+        try {
+            _environment = environment;
+
+            foreach (var statement in statements) {
+                Execute(statement);
+            }
+        }
+        finally {
+            _environment = previous;
+        }
+    }
+
+    public void Interpret(List<Stmt> statements) {
+        try {
+            foreach (var statement in statements) {
+                Execute(statement);
+            }
+        }
+        catch (RuntimeError error) {
+            Lox.RuntimeError(error);
+        }
+    }
+
+    private void Execute(Stmt statement) {
+        statement.Accept(this);
     }
 
     private string Stringify(object? value) {

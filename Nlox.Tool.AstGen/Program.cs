@@ -7,10 +7,19 @@ if (args.Length != 1) {
 
 var outputDir = args[0];
 DefineAst(outputDir, "Expr", new List<string> {
+    "Assign   : Token Name, Expr Value",
     "Binary   : Expr Left, Token Operator, Expr Right",
     "Grouping : Expr Expression",
     "Literal  : Object? Value",
-    "Unary    : Token Operator, Expr Right"
+    "Unary    : Token Operator, Expr Right",
+    "Variable : Token Name"
+});
+
+DefineAst(outputDir, "Stmt", new List<string> {
+    "Block      : List<Stmt> Statements",
+    "Expression : Expr Expr",
+    "Print      : Expr Expression",
+    "Var        : Token Name, Expr? Initializer"
 });
 
 void DefineAst(string outputDir, string baseName, List<string> types) {

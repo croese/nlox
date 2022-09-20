@@ -2,11 +2,27 @@ namespace Nlox.Core;
 
 public abstract class Expr {
     public interface Visitor<R> {
+        R VisitAssignExpr(Assign expr);
         R VisitBinaryExpr(Binary expr);
         R VisitGroupingExpr(Grouping expr);
         R VisitLiteralExpr(Literal expr);
         R VisitUnaryExpr(Unary expr);
+        R VisitVariableExpr(Variable expr);
     }
+    public class Assign : Expr {
+        public Assign(Token Name, Expr Value) {
+                this.Name = Name;
+                this.Value = Value;
+        }
+
+        public override R Accept<R>(Visitor<R> visitor) {
+            return visitor.VisitAssignExpr(this);
+        }
+
+        public Token Name{ get; }
+        public Expr Value{ get; }
+    }
+
     public class Binary : Expr {
         public Binary(Expr Left, Token Operator, Expr Right) {
                 this.Left = Left;
@@ -59,6 +75,18 @@ public abstract class Expr {
 
         public Token Operator{ get; }
         public Expr Right{ get; }
+    }
+
+    public class Variable : Expr {
+        public Variable(Token Name) {
+                this.Name = Name;
+        }
+
+        public override R Accept<R>(Visitor<R> visitor) {
+            return visitor.VisitVariableExpr(this);
+        }
+
+        public Token Name{ get; }
     }
 
 

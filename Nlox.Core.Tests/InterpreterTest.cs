@@ -9,7 +9,8 @@ public class InterpreterTest {
         var buffer = new StringWriter();
         var interpreter = new Interpreter(buffer);
 
-        interpreter.Interpret(new Expr.Literal(literal));
+        var statements = new List<Stmt> { new Stmt.Expression(new Expr.Literal(literal)) };
+        interpreter.Interpret(statements);
 
         Assert.Equal(expected, buffer.ToString().TrimEnd());
     }
