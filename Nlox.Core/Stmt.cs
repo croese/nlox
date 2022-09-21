@@ -7,6 +7,7 @@ public abstract class Stmt {
         R VisitIfStmt(If stmt);
         R VisitPrintStmt(Print stmt);
         R VisitVarStmt(Var stmt);
+        R VisitWhileStmt(While stmt);
     }
     public class Block : Stmt {
         public Block(List<Stmt> Statements) {
@@ -72,6 +73,20 @@ public abstract class Stmt {
 
         public Token Name{ get; }
         public Expr? Initializer{ get; }
+    }
+
+    public class While : Stmt {
+        public While(Expr Condition, Stmt Body) {
+                this.Condition = Condition;
+                this.Body = Body;
+        }
+
+        public override R Accept<R>(Visitor<R> visitor) {
+            return visitor.VisitWhileStmt(this);
+        }
+
+        public Expr Condition{ get; }
+        public Stmt Body{ get; }
     }
 
 

@@ -11,6 +11,7 @@ DefineAst(outputDir, "Expr", new List<string> {
     "Binary   : Expr Left, Token Operator, Expr Right",
     "Grouping : Expr Expression",
     "Literal  : Object? Value",
+    "Logical  : Expr Left, Token Operator, Expr Right",
     "Unary    : Token Operator, Expr Right",
     "Variable : Token Name"
 });
@@ -20,7 +21,8 @@ DefineAst(outputDir, "Stmt", new List<string> {
     "Expression : Expr Expr",
     "If         : Expr Condition, Stmt ThenBranch, Stmt? ElseBranch",
     "Print      : Expr Expression",
-    "Var        : Token Name, Expr? Initializer"
+    "Var        : Token Name, Expr? Initializer",
+    "While      : Expr Condition, Stmt Body"
 });
 
 void DefineAst(string outputDir, string baseName, List<string> types) {

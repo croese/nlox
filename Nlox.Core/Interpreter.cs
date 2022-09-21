@@ -75,6 +75,23 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
         return expr.Value;
     }
 
+    public object? VisitLogicalExpr(Expr.Logical expr) {
+        var left = Evaluate(expr.Left);
+
+        if (expr.Operator.Type == TokenType.OR) {
+            if (IsTruthy(left)) {
+                return left;
+            }
+        }
+        else {
+            if (!IsTruthy(left)) {
+                return left;
+            }
+        }
+
+        return Evaluate(expr.Right);
+    }
+
     public object? VisitUnaryExpr(Expr.Unary expr) {
         var right = Evaluate(expr.Right);
 
@@ -127,6 +144,14 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
         }
 
         _environment.Define(stmt.Name.Lexeme, value);
+        return ValueTuple.Create();
+    }
+
+    public ValueTuple VisitWhileStmt(Stmt.While stmt) {
+        while (IsTruthy(Evaluate(stmt.Condition))) {
+            Execute(stmt.Body);
+        }
+
         return ValueTuple.Create();
     }
 
