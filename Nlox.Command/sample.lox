@@ -32,3 +32,12 @@ var c = "global c";
 print a;
 print b;
 print c;
+
+if(2 == 1+1)
+    print "math works";
+
+if(2+2 == 5) {
+    print "math is broken";
+} else {
+    print "math works";
+}

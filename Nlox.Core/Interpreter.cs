@@ -103,6 +103,17 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
         return ValueTuple.Create();
     }
 
+    public ValueTuple VisitIfStmt(Stmt.If stmt) {
+        if (IsTruthy(Evaluate(stmt.Condition))) {
+            Execute(stmt.ThenBranch);
+        }
+        else if (stmt.ElseBranch != null) {
+            Execute(stmt.ElseBranch);
+        }
+
+        return ValueTuple.Create();
+    }
+
     public ValueTuple VisitPrintStmt(Stmt.Print stmt) {
         var value = Evaluate(stmt.Expression);
         _writer.WriteLine(Stringify(value));
