@@ -3,6 +3,7 @@ namespace Nlox.Core;
 public abstract class Stmt {
     public interface Visitor<R> {
         R VisitBlockStmt(Block stmt);
+        R VisitBreakStmt(Break stmt);
         R VisitExpressionStmt(Expression stmt);
         R VisitIfStmt(If stmt);
         R VisitPrintStmt(Print stmt);
@@ -19,6 +20,18 @@ public abstract class Stmt {
         }
 
         public List<Stmt> Statements{ get; }
+    }
+
+    public class Break : Stmt {
+        public Break(Token Token) {
+                this.Token = Token;
+        }
+
+        public override R Accept<R>(Visitor<R> visitor) {
+            return visitor.VisitBreakStmt(this);
+        }
+
+        public Token Token{ get; }
     }
 
     public class Expression : Stmt {

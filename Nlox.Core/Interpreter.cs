@@ -8,6 +8,14 @@ public class RuntimeError : Exception {
     public Token Token { get; }
 }
 
+public class BreakException : Exception {
+    public BreakException(Token token) {
+        Token = token;
+    }
+
+    public Token Token { get; }
+}
+
 public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
     private readonly TextWriter _writer;
     private Environment _environment = new();
@@ -115,6 +123,10 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
         return ValueTuple.Create();
     }
 
+    public ValueTuple VisitBreakStmt(Stmt.Break stmt) {
+        throw new BreakException(stmt.Token);
+    }
+
     public ValueTuple VisitExpressionStmt(Stmt.Expression stmt) {
         Evaluate(stmt.Expr);
         return ValueTuple.Create();
@@ -148,8 +160,13 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
     }
 
     public ValueTuple VisitWhileStmt(Stmt.While stmt) {
-        while (IsTruthy(Evaluate(stmt.Condition))) {
-            Execute(stmt.Body);
+        try {
+            while (IsTruthy(Evaluate(stmt.Condition))) {
+                Execute(stmt.Body);
+            }
+        }
+        catch (BreakException) {
+            // catch exception here so that loop is terminated
         }
 
         return ValueTuple.Create();
@@ -174,6 +191,10 @@ public class Interpreter : Expr.Visitor<object?>, Stmt.Visitor<ValueTuple> {
             foreach (var statement in statements) {
                 Execute(statement);
             }
+        }
+        catch (BreakException ex) {
+            // we weren't in a loop when break statement was hit
+            Lox.RuntimeError(new RuntimeError(ex.Token, "break statements are only allowed in loops"));
         }
         catch (RuntimeError error) {
             Lox.RuntimeError(error);

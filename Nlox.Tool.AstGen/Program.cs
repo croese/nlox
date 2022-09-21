@@ -18,6 +18,7 @@ DefineAst(outputDir, "Expr", new List<string> {
 
 DefineAst(outputDir, "Stmt", new List<string> {
     "Block      : List<Stmt> Statements",
+    "Break      : Token Token",
     "Expression : Expr Expr",
     "If         : Expr Condition, Stmt ThenBranch, Stmt? ElseBranch",
     "Print      : Expr Expression",
@@ -65,10 +66,14 @@ void DefineType(StringBuilder buffer, string baseName, string className, string 
 
     // constructor
     buffer.AppendLine($"        public {className}({fieldList}) {{");
-    var fields = fieldList.Split(", ");
-    foreach (var field in fields) {
-        var name = field.Split(" ")[1];
-        buffer.AppendLine($"                this.{name} = {name};");
+
+    var fields = new string[] { };
+    if (!string.IsNullOrWhiteSpace(fieldList)) {
+        fields = fieldList.Split(", ");
+        foreach (var field in fields) {
+            var name = field.Split(" ")[1];
+            buffer.AppendLine($"                this.{name} = {name};");
+        }
     }
 
     buffer.AppendLine("        }");
